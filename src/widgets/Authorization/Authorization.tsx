@@ -1,7 +1,6 @@
 'use client'
 import React, {useState} from 'react';
-import styles from '@/views/Authorization/Authorization.module.scss';
-import Input from "@/widgets/Input/Input";
+import styles from './Authorization.module.scss';
 import FormButton from "@/widgets/FormButton/FormButton";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {login} from "@/store/reducers/user.slice";
@@ -74,7 +73,7 @@ const Authorization = () => {
             />
             <FormButton type="submit">Войти</FormButton>
             <span className={styles.error}>{error.value && ''}</span>
-            <Link className={styles.link} href={pagesLinks.registration} type="button" target="_blank">
+            <Link className={styles.link} href={pagesLinks.registration} type="button">
                 Регистрация
             </Link>
         </form>

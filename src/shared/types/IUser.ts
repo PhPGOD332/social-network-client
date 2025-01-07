@@ -1,6 +1,14 @@
+import {UserRoles} from "@/shared/types/UserRoles";
+
 export interface IUser {
-    id: number;
+    _id: string;
     login: string;
-    password: string;
     email: string;
+    phone: string;
+    isActivated: boolean;
+    role: {
+        value: UserRoles,
+        label: string,
+    },
+    activationLink: string;
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './GreenButton.module.scss';
-import {TButton} from "@/shared/types/UI/UI";
+import styles from './FormButton.module.scss';
+import {ButtonTypes, TButton} from "@/shared/types/UI/UI";
 
-const PurpleButton = ({ children, onClick, type }: TButton) => {
+const FormButton = ({ children, onClick, type = ButtonTypes.button }: TButton) => {
     return (
         <button
             type={ type }
@@ -14,4 +14,4 @@ const PurpleButton = ({ children, onClick, type }: TButton) => {
     );
 };
 
-export default PurpleButton;
+export default FormButton;
