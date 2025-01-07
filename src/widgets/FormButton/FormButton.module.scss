@@ -1,0 +1,14 @@
+.greenButton {
+  padding: 10px;
+  background-color: #4095ff;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+
+.greenButton:hover {
+  background-color: #fff;
+}
