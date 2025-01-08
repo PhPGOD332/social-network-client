@@ -1,6 +1,8 @@
+@import "@/shared/styles/vars";
+
 .greenButton {
   padding: 10px;
-  background-color: #8a6aff;
+  background-color: $pink-main;
   border-radius: 5px;
   font-size: 18px;
   cursor: pointer;
@@ -10,5 +12,5 @@
 }
 
 .greenButton:hover {
-  background-color: #7756fc;
+  background-color: $pink-hover;
 }

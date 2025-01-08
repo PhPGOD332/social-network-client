@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from "./Registration.module.scss";
 import FormButton from "@/widgets/FormButton/FormButton";
 import Link from "next/link";
@@ -18,6 +18,7 @@ interface TInputs {
     surname: string;
     name: string;
     patronymic: string;
+    dateBirth: Date | null;
 }
 
 const Registration = () => {
@@ -34,26 +35,40 @@ const Registration = () => {
     }
 
     const onSubmit = async (data: TInputs) => {
-        const response = await dispatch(
-            registration({
-                login: data.login,
-                password: data.password
-            }),
-        );
+        let response;
+        if (data.password === data.passwordRepeat) {
+            response = await dispatch(
+                registration({
+                    login: data.login,
+                    password: data.password,
+                    passwordRepeat: data.passwordRepeat,
+                    phone: data.phone,
+                    name: data.name,
+                    surname: data.surname,
+                    patronymic: data.patronymic,
+                    dateBirth: data.dateBirth
+                }),
+            );
 
-        if (!response.payload) {
+            if (!response.payload) {
+                setError({
+                    isError: true,
+                    value: 'Неверные данные',
+                });
+            }
+
+            if (response.payload) {
+                setError({
+                    isError: false,
+                    value: ''
+                });
+                router.push(pagesLinks.main);
+            }
+        } else {
             setError({
                 isError: true,
-                value: 'Неверные данные',
+                value: 'Пароли должны совпадать',
             });
-        }
-
-        if (response.payload) {
-            setError({
-                isError: false,
-                value: ''
-            });
-            router.push(pagesLinks.main);
         }
     }
 
@@ -69,6 +84,7 @@ const Registration = () => {
                 })}
             />
             <input
+
                 type="tel"
                 className={styles.input}
                 placeholder="Телефон"
@@ -76,23 +92,57 @@ const Registration = () => {
                     required: "Введите ваш телефон"
                 })}
             />
+            <div className={styles.rowsInputs}>
+                <div className={styles.rowInputs}>
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Имя"
+                        {...register("name", {
+                            required: "Введите имя"
+                        })}
+                    />
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Фамилия"
+                        {...register("surname", {
+                            required: "Введите фамилию"
+                        })}
+                    />
+                </div>
+                <div className={styles.rowInputs}>
+                    <input
+                        type="date"
+                        className={styles.input}
+                        placeholder="Дата рождения"
+                        {...register("dateBirth", {})}
+                    />
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Отчество"
+                        {...register("patronymic", {})}
+                    />
+                </div>
+            </div>
             <input
                 type="password"
                 className={styles.input}
                 placeholder="Пароль"
                 {...register("password", {
-                    required: "Введите ваш пароль"
+                    required: "Введите пароль"
                 })}
             />
             <input
                 type="password"
                 className={styles.input}
                 placeholder="Повторите пароль"
-                {...register("password", {
-                    required: "Повторите ваш пароль"
+                {...register("passwordRepeat", {
+                    required: "Повторите пароль"
                 })}
             />
-            <FormButton type="submit">Войти</FormButton>
+            <FormButton type="submit">Зарегистрироваться</FormButton>
             <span className={styles.error}>{error.value && ''}</span>
             <Link className={styles.link} href={pagesLinks.login} type="button">
                 Войти

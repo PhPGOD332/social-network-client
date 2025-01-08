@@ -1,12 +1,15 @@
+@import "@/shared/styles/vars";
+
 .authBlock {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border: 1px solid #383434;
-  border-radius: 10px;
-  padding: 15px;
+  border: 1px solid $border-dark;
+  border-radius: 20px;
+  padding: 25px;
   color: #ffffff;
-  box-shadow: 0 0 50px 10px #000;
+  box-shadow: 0 0 50px 10px $dark;
+  background-color: $dark;
 }
 
 .header {
@@ -15,7 +18,7 @@
 }
 
 .error {
-  color: #9d1f1f;
+  color: $error;
 }
 
 .input {
@@ -29,6 +32,20 @@
 .link {
   text-decoration: underline;
   font-size: 14px;
-  color: #cccccc;
+  color: $link-underline;
   margin: 0 auto;
 }
+
+.rowsInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.rowInputs {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr 2fr;
+}
+

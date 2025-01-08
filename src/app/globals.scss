@@ -1,3 +1,5 @@
+@import "@/shared/styles/vars";
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,4 +9,15 @@
 
 .container {
   background-color: #262323;
+}
+
+.loadingBlock {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gifLoad {
+  width: 100%;
 }

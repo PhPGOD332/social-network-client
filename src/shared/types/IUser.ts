@@ -5,6 +5,11 @@ export interface IUser {
     login: string;
     email: string;
     phone: string;
+    surname: string;
+    name: string;
+    patronymic: string;
+    avatar: string;
+    dateBirth: Date | null;
     isActivated: boolean;
     role: {
         value: UserRoles,

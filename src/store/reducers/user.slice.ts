@@ -9,6 +9,17 @@ interface ILogin {
     password: string;
 }
 
+export interface IRegistration {
+    login: string;
+    password: string;
+    passwordRepeat: string;
+    phone: string;
+    surname: string;
+    name: string;
+    patronymic: string;
+    dateBirth: Date | null;
+}
+
 interface TInitialState {
     user: IUser;
     isAuth: boolean;
@@ -23,6 +34,11 @@ const initialState: TInitialState = {
         login: "",
         phone: "",
         email: "",
+        surname: "",
+        name: "",
+        patronymic: "",
+        avatar: "",
+        dateBirth: null,
         isActivated: false,
         role: {
             value: UserRoles.User,
@@ -65,14 +81,12 @@ const userSlice = createSlice({
                 state.user = action.payload;
                 state.isAuth = true;
             }
-
             state.isLoading = false;
         });
-        builder.addCase(login.rejected, (state: TInitialState) => {
-            state.error = 'Произошла ошибка';
+        builder.addCase(login.rejected, (state: TInitialState, action) => {
+            state.error = action.payload;
             state.isLoading = false;
         });
-
 
         builder.addCase(registration.pending, (state: TInitialState) => {
            state.isLoading = true;
@@ -149,15 +163,15 @@ export const login = createAsyncThunk(
 
 export const registration = createAsyncThunk(
     "user/registration",
-    async ({ login, password }: ILogin) => {
+    async (regData: IRegistration) => {
         try {
-            const response = await AuthService.registration(login, password);
-
+            const response = await AuthService.registration(regData);
+            console.log(response);
             localStorage.setItem("token", response.data.accessToken);
 
             return response.data.user;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 );
