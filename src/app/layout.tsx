@@ -37,7 +37,7 @@ export default function RootLayout({
       <Provider store={setupStore()}>
 
           <html lang="en">
-              <body className={`${geistSans.variable} ${geistMono.variable} container`}>
+              <body className={`${geistSans.variable} ${geistMono.variable}`}>
                   <PersistGate persistor={persistor}>
                     {children}
                   </PersistGate>

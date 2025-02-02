@@ -27,6 +27,7 @@ export const pagesLinks = {
     profile: '/profile',
     login: '/login',
     registration: '/registration',
+    edit: '/edit'
 }
 
 interface IPage {

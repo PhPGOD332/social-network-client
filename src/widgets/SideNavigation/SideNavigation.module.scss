@@ -1,0 +1,30 @@
+@import "@/shared/styles/vars";
+
+.navigation {
+  .name {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-weight: bold;
+    background-color: $content-bg;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .linkBlock {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    .link {
+      display: inline-block;
+      padding: 5px 0;
+      color: $link-underline;
+      background: transparent;
+      border-radius: 10px;
+    }
+  }
+
+  .exitButton {
+    margin: 0 auto;
+  }
+}

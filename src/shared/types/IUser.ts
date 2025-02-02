@@ -9,11 +9,12 @@ export interface IUser {
     name: string;
     patronymic: string;
     avatar: string;
-    dateBirth: Date | null;
+    dateBirth: string | null;
     isActivated: boolean;
     role: {
         value: UserRoles,
         label: string,
     },
     activationLink: string;
+    avatarFile?: File;
 }

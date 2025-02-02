@@ -1,3 +1,4 @@
+import React from "react";
 
 enum InputTypes {
     text = "text",
@@ -13,8 +14,9 @@ export enum ButtonTypes {
 
 export interface TButton {
     children?: string;
-    onClick?: () => void;
+    onClick?: (e?: React.MouseEvent<any>) => void;
     type?: ButtonTypes;
+    className?: string;
 }
 
 export interface TInput {

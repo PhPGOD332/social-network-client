@@ -7,8 +7,24 @@
   font-family: "Arial", sans-serif;
 }
 
-.container {
-  background-color: #262323;
+.main {
+  background-color: $main-bg;
+  min-height: 100vh;
+
+  .container {
+    display: grid;
+    grid-template-columns: 250px 3fr;
+    gap: 10px;
+    margin: 0 auto;
+    max-width: 1100px;
+    padding-top: 20px;
+    
+    .contentBlock {
+      background-color: $content-bg;
+      padding: 15px;
+      border-radius: 15px;
+    }
+  }
 }
 
 .loadingBlock {

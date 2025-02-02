@@ -2,7 +2,7 @@ import {IUser} from "@/shared/types/IUser";
 import {UserRoles} from "@/shared/types/UserRoles";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AuthService} from "@/services/auth/AuthService";
-import {updateLocalStorage} from "@/store/localStorage";
+import UserService from "@/services/UserService";
 
 interface ILogin {
     login: string;
@@ -20,7 +20,7 @@ export interface IRegistration {
     dateBirth: Date | null;
 }
 
-interface TInitialState {
+interface TUserInitialState {
     user: IUser;
     isAuth: boolean;
     isLoading: boolean;
@@ -28,7 +28,7 @@ interface TInitialState {
     error: string | null;
 }
 
-const initialState: TInitialState = {
+export const userInitialState: TUserInitialState = {
     user: {
         _id: "",
         login: "",
@@ -38,6 +38,7 @@ const initialState: TInitialState = {
         name: "",
         patronymic: "",
         avatar: "",
+        avatarFile: null,
         dateBirth: null,
         isActivated: false,
         role: {
@@ -54,7 +55,7 @@ const initialState: TInitialState = {
 
 const userSlice = createSlice({
     name: "user",
-    initialState,
+    initialState: userInitialState,
     reducers: {
         setAuth(state, action: { payload: boolean; type: string }) {
             state.isAuth = action.payload;
@@ -73,32 +74,32 @@ const userSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(login.pending, (state: TInitialState) => {
+        builder.addCase(login.pending, (state: TUserInitialState) => {
             state.isLoading = true;
         });
-        builder.addCase(login.fulfilled, (state: TInitialState, action) => {
+        builder.addCase(login.fulfilled, (state: TUserInitialState, action) => {
             if (action.payload) {
-                state.user = action.payload;
+                state.user = UserService.setUserPath(action.payload);
                 state.isAuth = true;
             }
             state.isLoading = false;
         });
-        builder.addCase(login.rejected, (state: TInitialState, action) => {
+        builder.addCase(login.rejected, (state: TUserInitialState, action) => {
             state.error = action.payload;
             state.isLoading = false;
         });
 
-        builder.addCase(registration.pending, (state: TInitialState) => {
+        builder.addCase(registration.pending, (state: TUserInitialState) => {
            state.isLoading = true;
         });
-        builder.addCase(registration.fulfilled, (state: TInitialState, action) => {
+        builder.addCase(registration.fulfilled, (state: TUserInitialState, action) => {
             if (action.payload) {
-                state.user = action.payload;
+                state.user = UserService.setUserPath(action.payload);
                 state.isAuth = true;
             }
             state.isLoading = false;
         });
-        builder.addCase(registration.rejected, (state: TInitialState, action) => {
+        builder.addCase(registration.rejected, (state: TUserInitialState, action) => {
             if (typeof action.payload === "string") {
                 state.error = action.payload;
             }
@@ -106,10 +107,10 @@ const userSlice = createSlice({
             state.isLoading = false;
         });
 
-        builder.addCase(checkAuth.pending, (state: TInitialState) => {
+        builder.addCase(checkAuth.pending, (state: TUserInitialState) => {
            state.isLoading = true;
         });
-        builder.addCase(checkAuth.fulfilled, (state: TInitialState, action) => {
+        builder.addCase(checkAuth.fulfilled, (state: TUserInitialState, action) => {
             if (action.payload) {
                 state.user = action.payload;
                 state.isAuth = true;
@@ -117,7 +118,7 @@ const userSlice = createSlice({
 
             state.isLoading = false;
         });
-        builder.addCase(checkAuth.rejected, (state: TInitialState, action) => {
+        builder.addCase(checkAuth.rejected, (state: TUserInitialState, action) => {
             if (typeof action.payload === 'string') {
                 state.error = action.payload;
             }
@@ -125,17 +126,35 @@ const userSlice = createSlice({
             state.isLoading = false;
         });
 
-        builder.addCase(logout.pending, (state: TInitialState) => {
+        builder.addCase(logout.pending, (state: TUserInitialState) => {
             state.isLoading = true;
         });
-        builder.addCase(logout.fulfilled, (state: TInitialState, action) => {
+        builder.addCase(logout.fulfilled, (state: TUserInitialState, action) => {
             if (action.payload) {
                 state.isAuth = false;
             }
 
             state.isLoading = false;
         });
-        builder.addCase(logout.rejected, (state: TInitialState, action) => {
+        builder.addCase(logout.rejected, (state: TUserInitialState, action) => {
+            if (typeof action.payload == "string") {
+                state.error = action.payload;
+            }
+
+            state.isLoading = false;
+        });
+
+        builder.addCase(editUser.pending, (state: TUserInitialState) => {
+            state.isLoading = true;
+        });
+        builder.addCase(editUser.fulfilled, (state: TUserInitialState, action) => {
+            if (action.payload) {
+                state.user = action.payload;
+            }
+
+            state.isLoading = false;
+        });
+        builder.addCase(editUser.rejected, (state: TUserInitialState, action) => {
             if (typeof action.payload == "string") {
                 state.error = action.payload;
             }
@@ -150,7 +169,6 @@ export const login = createAsyncThunk(
     async ({ login, password }: ILogin) => {
         try {
             const response = await AuthService.login(login, password);
-
             console.log(response);
 
             localStorage.setItem("token", response.data.accessToken);
@@ -208,7 +226,29 @@ export const checkAuth = createAsyncThunk<IUser>(
             console.log(error)
         }
     }
-)
+);
+
+export const editUser = createAsyncThunk(
+    "user/editUser",
+    async (userData: IUser) => {
+        setLoading(true);
+
+        try {
+            console.log(userData);
+            const response = await UserService.editUser(userData);
+
+            console.log(response);
+
+            // if (response) {
+            //     setUser(response.data);
+            // }
+            //
+            // return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+);
 
 export const { setAuth, setUser, setLoading } = userSlice.actions;
 

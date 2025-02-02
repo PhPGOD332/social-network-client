@@ -2,13 +2,14 @@
 import React, {useState} from 'react';
 import styles from './Authorization.module.scss';
 import FormButton from "@/widgets/FormButton/FormButton";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {useAppDispatch} from "@/store/hooks";
 import {login} from "@/store/reducers/user.slice";
 import {IError} from "@/shared/types/IError/IError";
 import {useRouter} from "next/navigation";
 import {pagesLinks} from "@/shared/constants/constants";
 import {useForm} from "react-hook-form";
 import Link from "next/link";
+import {ButtonTypes} from "@/shared/types/UI/UI";
 
 interface TInputs {
     login: string;
@@ -17,7 +18,6 @@ interface TInputs {
 
 const Authorization = () => {
     const { register, handleSubmit, getValues } = useForm<TInputs>();
-    const store = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -71,7 +71,7 @@ const Authorization = () => {
                     required: "Введите ваш пароль"
                 })}
             />
-            <FormButton type="submit">Войти</FormButton>
+            <FormButton type={ButtonTypes.submit}>Войти</FormButton>
             <span className={styles.error}>{error.value && ''}</span>
             <Link className={styles.link} href={pagesLinks.registration} type="button">
                 Регистрация
